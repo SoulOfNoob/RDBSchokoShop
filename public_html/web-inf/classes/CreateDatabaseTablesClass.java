@@ -10,13 +10,14 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 //Hier die Klasse mit Vererbung
-public class CreateDatabaseTables extends HttpServlet
+public class CreateDatabaseTablesClass
 {
-   public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-   {
-      res.setContentType("text/html");
-      PrintWriter out = res.getWriter();
 
+
+   public String CreateTables()
+   {
+      String message;
+      message = "Tabellen erfolgreich eingerichtet";
       //DB-Treiber einbinden
       try
       {
@@ -24,7 +25,7 @@ public class CreateDatabaseTables extends HttpServlet
       }
       catch (ClassNotFoundException e)
       {
-          out.println("DB-Treiber nicht da!");
+          message = "DB-Treiber nicht da!";
       }
 
       // Connection zum DB-Server eroeffnen
@@ -44,7 +45,7 @@ public class CreateDatabaseTables extends HttpServlet
          }
          catch (Exception e)
          {
-             out.println("Problem mit: DROP TABLE");
+             message = "Problem mit: DROP TABLE";
          }
          // Jetzt normales SQL-Skript, aber innerhalb des Servlets
 
@@ -61,7 +62,7 @@ public class CreateDatabaseTables extends HttpServlet
             "PRIMARY KEY (`ID`)"+
           ") ENGINE=InnoDB;"
          );
-         st.executeUpdate("INSERT INTO `Customers` (password,firstname,lastname,country,city,zipcode,address) VALUES ('password','Jan','Ryklikas','Deutschland','Hamburg',22459,'meinestrasse11');");
+         //st.executeUpdate("INSERT INTO `Customers` (password,firstname,lastname,country,city,zipcode,address) VALUES ('password','Jan','Ryklikas','Deutschland','Hamburg',22459,'meinestrasse11');");
 
          st.executeUpdate(
           "CREATE TABLE `Articles` ("+
@@ -74,7 +75,7 @@ public class CreateDatabaseTables extends HttpServlet
             "PRIMARY KEY (`ID`)"+
           ") ENGINE=InnoDB;"
          );
-         st.executeUpdate("INSERT INTO `Articles` (article_name,stock,price,description,picture) VALUES ('Schokolade',50,5.99,'Leckere Schokolade aus natuerlichem Anbau','Pfad');");
+         //st.executeUpdate("INSERT INTO `Articles` (article_name,stock,price,description,picture) VALUES ('Schokolade',50,5.99,'Leckere Schokolade aus natuerlichem Anbau','Pfad');");
 
          st.executeUpdate(
           "CREATE TABLE `Bills` ("+
@@ -87,7 +88,7 @@ public class CreateDatabaseTables extends HttpServlet
             "constraint foreign key(customer_ID) references Customers(ID) on update restrict"+
           ") ENGINE=InnoDB;"
          );
-         st.executeUpdate("INSERT INTO `Bills` (customer_ID,status,price) VALUES (1,1,17.97);");
+         //st.executeUpdate("INSERT INTO `Bills` (customer_ID,status,price) VALUES (1,1,17.97);");
 
          st.executeUpdate(
           "CREATE TABLE `Orders` ("+
@@ -98,44 +99,16 @@ public class CreateDatabaseTables extends HttpServlet
             "constraint foreign key(article_ID) references Articles(ID) on update restrict"+
           ") ENGINE=InnoDB;"
          );
-         st.executeUpdate("INSERT INTO `Orders` (bill_ID,article_ID,amount) VALUES (1,1,3);");
-
-         //Response Webseite aufbauen
-         out.println("<html><head><title>DBCreate</title></head>");
-         out.println("<body bgcolor=\"#CCFFCC\">Create Database Tables<hr><br>");
-
-         //ResultSet mit Cursor bearbeiten und ausgeben
-         ResultSet rs = st.executeQuery("select * from `Customers`");
-
-         //Hier die Cursor-Schleife
-         while(rs.next())
-         {
-             String id = rs.getString("ID");
-             String password = rs.getString("password");
-             String firstname = rs.getString("firstname");
-             String lastname = rs.getString("lastname");
-             String country = rs.getString("country");
-             String city = rs.getString("city");
-             String zipcode = rs.getString("zipcode");
-             String address = rs.getString("address");
-
-             out.println("ID: "+id+"<br />");
-             out.println("Password: "+password+"<br />");
-             out.println("Firstname: "+firstname+"<br />");
-             out.println("Lastname: "+lastname+"<br />");
-             out.println("Country: "+country+"<br />");
-             out.println("City: "+city+"<br />");
-             out.println("Zipcode: "+zipcode+"<br />");
-             out.println("Adress: "+address+"<br />");
-         }
-         out.println("</body> </html>");
+         //st.executeUpdate("INSERT INTO `Orders` (bill_ID,article_ID,amount) VALUES (1,1,3);");
+         
          st.close();
          con.close();
      }
      catch (Exception e)
      {
-         out.println(" MySQL Exception: " + e.getMessage());
+         message = "MySQL Exception: " + e.getMessage();
      }
-     
+
+     return message;
    }
 }
