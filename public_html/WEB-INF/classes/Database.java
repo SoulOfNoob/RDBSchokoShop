@@ -18,7 +18,8 @@ public class Database{
   String error = "";
   String message = "";
   ResultSet rs;
-  List<Integer> ids = new ArrayList<Integer>();
+  List<Integer> ids1 = new ArrayList<Integer>();
+  List<Integer> ids2 = new ArrayList<Integer>();
 
   public String ExecuteQuery(String query){
     
@@ -81,7 +82,7 @@ public class Database{
       rs = st.executeQuery("Select `ID` FROM `Customers`");
 
       while(rs.next()){
-        ids.add(rs.getInt(1));
+        ids1.add(rs.getInt(1));
       }
 
       st.close();
@@ -90,7 +91,7 @@ public class Database{
       message = "<strong>MySQL Exception: " + e.getMessage() + "</strong>";
     }
     this.error = message;
-    return ids;
+    return ids1;
   }
 
   public List GetArticleIds(){
@@ -108,7 +109,7 @@ public class Database{
       rs = st.executeQuery("Select `ID` FROM `Articles`");
 
       while(rs.next()){
-        ids.add(rs.getInt(1));
+        ids2.add(rs.getInt(1));
       }
 
       st.close();
@@ -117,7 +118,7 @@ public class Database{
       message = "<strong>MySQL Exception: " + e.getMessage() + "</strong>";
     }
     this.error = message;
-    return ids;
+    return ids2;
   }
 
   public String CreateTables(){

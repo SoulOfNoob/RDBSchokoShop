@@ -8,20 +8,14 @@ String error = "";
 String switchvar = "";
 
 if(session.getAttribute("currentCustomer") != null && session.getAttribute("currentCustomer") != "null"){
-
     currentCustomer = (Customer) session.getAttribute("currentCustomer");
-    
 }
 
 if(request.getParameter("switch") != null && request.getParameter("switch") != "null"){
     switchvar = (String) request.getParameter("switch");
-    //error = switchvar;
 }
 
 if(switchvar.equals("customer")){
-
-    //error = "req: "+request.getParameter("switch");
-
     String  firstName  = request.getParameter("firstname");
     String  lastName   = request.getParameter("lastname");
     String  password   = request.getParameter("password");
@@ -31,16 +25,14 @@ if(switchvar.equals("customer")){
     try{    zipcode    = Integer.parseInt(request.getParameter("zipcode"));  } catch (Exception e) { error = "kein int"; }
     String  address    = request.getParameter("address");
     String  email      = request.getParameter("email");
-
-    Customer customer = new Customer();
-    currentCustomer.CreateCustomer(firstName, lastName, password, country, city, zipcode, address, email);
-
+    
+    if(error.equals("")){
+        Customer customer = new Customer();
+        currentCustomer.CreateCustomer(firstName, lastName, password, country, city, zipcode, address, email);
+    }
 }
 
 if(switchvar.equals("article")){
-
-    //error = "req: "+request.getParameter("switch");
-    
     String  articleName = request.getParameter("articlename");
     Integer stock = 0;
     try{    stock       = Integer.parseInt(request.getParameter("stock"));  } catch (Exception e) { error = "kein int"; }
@@ -53,8 +45,6 @@ if(switchvar.equals("article")){
         Article article = new Article();
         error = article.CreateArticle(articleName, stock, price, description, picture);
     }
-    
-
 }
 
 Database database = new Database();
@@ -63,7 +53,6 @@ Integer i = 0;
 
 List customer_ids = database.GetCustomerIds();
 List<Customer> allCustomers = new ArrayList<Customer>();
-i=0;
 for(i=0;i<customer_ids.size();i++){
     Customer customer = new Customer();
     id = (Integer) customer_ids.get(i);
@@ -73,7 +62,6 @@ for(i=0;i<customer_ids.size();i++){
 
 List article_ids = database.GetArticleIds();
 List<Article> allArticles = new ArrayList<Article>();
-i=0;
 for(i=0;i<article_ids.size();i++){
     Article article = new Article();
     id = (Integer) article_ids.get(i);
@@ -171,10 +159,9 @@ for(i=0;i<article_ids.size();i++){
                                 <th>address</th>
                                 <th>email</th>
                             </tr>
-                            <% i=0;
-                            for(i=0;i<allCustomers.size();i++){ 
+                            <%for(i=0;i<allCustomers.size();i++){ 
                                 Customer customer = new Customer();
-                                customer = (Customer) allCustomers.get(i);
+                                customer = allCustomers.get(i);
                             %>
                                 <tr>
                                     <td><%= customer.GetId() %></td>
@@ -194,8 +181,7 @@ for(i=0;i<article_ids.size();i++){
                     <div class="fullwidth db_output">
                         <table>
                             <tr><th>ID</th><th>article_name</th><th>stock</th><th>price</th><th>description</th><th>picture</th></tr>
-                            <% i=0;
-                            for(i=0;i<allCustomers.size();i++){ 
+                            <%for(i=0;i<allArticles.size();i++){ 
                                 Article article = new Article();
                                 article = (Article) allArticles.get(i);
                             %>
