@@ -130,7 +130,7 @@ if(request.getParameter("switch") != null){
 
 
                                 <%
-                                    articleString = articleString + "[Artikel_ID: "+article.GetId()+", Menge: "+boughtAmount.get(i)+"], ";
+                                    articleString = articleString + "[ID: "+article.GetId()+", Name: "+article.GetArticleName()+", Menge: "+boughtAmount.get(i)+"];";
                                     summe = summe + sum; 
                                 } %>
                                 <input type="hidden" name="switch"      value="order">

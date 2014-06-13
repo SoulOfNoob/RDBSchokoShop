@@ -479,3 +479,20 @@ a:focus { text-decoration:none;}
 .clearfix {
   *zoom: 1;
 }
+
+.buttonlink, .buttonlink:visited{
+	background-color: rgba(0, 0, 0, 0.4);
+	text-align: center;
+	font-size: 16pt;
+	color: #FFFFFF;
+	display: block;
+	height: 100%;
+	width: 100%;
+	padding: 25px 20px;
+	-webkit-transition: background-color 0.5s; /* For Safari 3.1 to 6.0 */
+    transition: background-color 0.5s;
+}
+.buttonlink:hover{
+	background-color: rgba(255, 0, 0, 0.8);
+	color: #ffffff;
+}

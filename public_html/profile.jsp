@@ -1,24 +1,24 @@
 <%@ page contentType="text/html" language="java" %>
 <%@ page import="myclasses.*" %>
 <%@ page import="java.util.*"%>
+<%@ page import="java.sql.ResultSet"%>
 <% 
 String email    = "";
 String password = "";
 String error    = "";
+
 Customer currentCustomer = new Customer();
 if(request.getParameter("email") != null && request.getParameter("password") != null){
     email       = request.getParameter("email");
     password    = request.getParameter("password");
-
     error       = currentCustomer.LoadCustomer(email, password);
-
     session.setAttribute("currentCustomer", currentCustomer);
-
 }else if(session.getAttribute("currentCustomer") != null && session.getAttribute("currentCustomer") != "null"){
-
     currentCustomer = (Customer) session.getAttribute("currentCustomer");
-    
 }
+
+Database database = new Database();
+String table_rows = database.GetOrders(currentCustomer.GetId());
 %>
 
 <!DOCTYPE html>
@@ -67,8 +67,8 @@ if(request.getParameter("email") != null && request.getParameter("password") != 
             <div id="content">
                 <% if(error != ""){ %><div id="error"><%= error %></div><% } %>
                 <% if(currentCustomer.GetEmail() != ""){ %>
-                    <p>Logged in!</p>
                     <div style="width: 100%" class="fullwidth">
+                        <strong>Meine Daten</strong><br /><br />
                         <table border="0">
                             <tr><td>ID: </td><td><%= currentCustomer.GetId() %></td></tr>
                             <tr><td>Vorname: </td><td><%= currentCustomer.GetFirstName() %></td></tr>
@@ -78,6 +78,20 @@ if(request.getParameter("email") != null && request.getParameter("password") != 
                             <tr><td>Postleitzah: </td><td><%= currentCustomer.GetZipcode() %></td></tr>
                             <tr><td>Adresse: </td><td><%= currentCustomer.GetAddress() %></td></tr>
                             <tr><td>Email: </td><td><%= currentCustomer.GetEmail() %></td></tr>
+                        </table>
+                    </div>
+                    <div class="space"></div>
+                    <div class="fullwidth db_output">
+                        <strong>Meine Bestellungen</strong><br /><br />
+                        <table>
+                            <tr>
+                                <th>Bestellnummer</th>
+                                <th>Datum</th>
+                                <th>Status</th>
+                                <th>Gesamtpreis</th>
+                                <th>Artikel/Menge</th>
+                            </tr>
+                            <%= table_rows %>
                         </table>
                     </div>
                 <% }else{ %>

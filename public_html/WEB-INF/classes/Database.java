@@ -17,12 +17,12 @@ public class Database{
 
   String error = "";
   String message = "";
+  String table = "";
   ResultSet rs;
   List<Integer> ids1 = new ArrayList<Integer>();
   List<Integer> ids2 = new ArrayList<Integer>();
 
   public String ExecuteQuery(String query){
-    
     message = "<strong>Query erfolgreich ausgefuehrt</strong>";
     try{
       Class.forName("org.gjt.mm.mysql.Driver");  //Da sind die Treiber
@@ -45,7 +45,6 @@ public class Database{
   }
 
   public ResultSet GetResults(String query){
-    
     message = "<strong>Request erfolgreich ausgefuehrt</strong>";
     try{
       Class.forName("org.gjt.mm.mysql.Driver");  //Da sind die Treiber
@@ -68,7 +67,6 @@ public class Database{
   }
 
   public List GetCustomerIds(){
-
     message = "<strong>Customer erfolgreich erstellt</strong>";
     try{
       Class.forName("org.gjt.mm.mysql.Driver");  //Da sind die Treiber
@@ -95,7 +93,6 @@ public class Database{
   }
 
   public List GetArticleIds(){
-
     message = "<strong>Customer erfolgreich erstellt</strong>";
     try{
       Class.forName("org.gjt.mm.mysql.Driver");  //Da sind die Treiber
@@ -121,8 +118,41 @@ public class Database{
     return ids2;
   }
 
-  public String CreateTables(){
+  public String GetOrders(Integer customer_ID){
+    message = "<strong> </strong>";
+    try{
+      Class.forName("org.gjt.mm.mysql.Driver");  //Da sind die Treiber
+    } catch (ClassNotFoundException e) {
+      message = "<strong>DB-Treiber nicht da!</strong>";
+    }
+    try{
+      Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dx45", "dx45", "Ch4H");
+      Statement st = con.createStatement();  //(Noch) leerer SQL-Befehl
+
+      rs = st.executeQuery("SELECT * FROM `Bills` WHERE `customer_ID` = "+customer_ID+";");
+
+      while(rs.next()){
+        String articles[] = rs.getString("articles").split(";");
+        String articleString = "";
+        for(int i = 0;i<articles.length;i++){
+          articleString = articleString + articles[i] + "<br />";
+        }
+        table = table + "<tr><td>"+rs.getInt(1)+"</td><td>"+rs.getString("date")+"</td><td>"+rs.getInt(4)+"</td><td>"+rs.getDouble(5)+" &euro;</td><td>"+articleString+"</td></tr>";
+      }
+
+      st.close();
+      con.close();
+    } catch (Exception e) {
+      message = "<strong>MySQL Exception: " + e.getMessage() + "</strong>";
+    }
+    this.error = message;
+
     
+
+    return table;
+  }
+
+  public String CreateTables(){
     message = "<strong>Tabellen erfolgreich eingerichtet</strong>";
     //DB-Treiber einbinden
     try{
@@ -196,5 +226,8 @@ public class Database{
    }
    this.error = message;
    return message;
+  }
+  public String GetError(){
+    return this.error;
   }
 }

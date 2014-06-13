@@ -7,12 +7,34 @@ Customer currentCustomer = new Customer();
 String error = "";
 String switchvar = "";
 
+Database database = new Database();
+Integer id = 0;
+Integer i = 0;
+
 if(session.getAttribute("currentCustomer") != null && session.getAttribute("currentCustomer") != "null"){
     currentCustomer = (Customer) session.getAttribute("currentCustomer");
 }
 
 if(request.getParameter("switch") != null && request.getParameter("switch") != "null"){
     switchvar = (String) request.getParameter("switch");
+}
+
+if(session.getAttribute("currentCustomer") != null && session.getAttribute("currentCustomer") != "null" && switchvar.equals("reset")){
+    error = database.CreateTables();
+
+    Customer jan = new Customer();
+    jan.CreateCustomer("Jan", "Ryklikas", "meinpass", "Deutschland", "Hamburg", 22459, "testadresse", "jan_ryklikas@ymail.com");
+
+    Article schoko = new Article();
+    schoko.CreateArticle("Schokolade", 50, 5.99, "Leckere Schokolade aus natuerlichem Anbau", "schoko.jpg");
+    Article schoko2 = new Article();
+    schoko2.CreateArticle("Weisse Schokolade", 500, 2.99, "Ganz normale Weisse Schokolade", "w_schoko.jpg");
+    Article schoko3 = new Article();
+    schoko3.CreateArticle("Nougat Schokolade", 50, 8.99, "Mit Nuessen verfeinertes Nougat", "nougat.jpg");
+    Article schoko4 = new Article();
+    schoko4.CreateArticle("Zartbitter Schokolade", 900, 14.99, "Leckere Zartbitterschokolade mit 80% Kakao", "zb_schoko.jpg");
+    Article schoko5 = new Article();
+    schoko5.CreateArticle("Kokos Schokolade", 20, 30.45, "Eine Riesige Tafel Vollmilchschokolade mit Kokosraspeln", "kokos.jpg");
 }
 
 if(switchvar.equals("customer")){
@@ -49,7 +71,7 @@ if(switchvar.equals("article")){
 
 if(session.getAttribute("currentCustomer") != null && session.getAttribute("currentCustomer") != "null" && switchvar.equals("deletecustomer")){
     Customer customer = new Customer();
-    Integer id = 0;
+    id = 0;
     try{    id        = Integer.parseInt(request.getParameter("id"));  } catch (Exception e) { error = "kein int"; }
     customer.LoadCustomerById(id);
     error = customer.DeleteCustomer(id);
@@ -57,15 +79,11 @@ if(session.getAttribute("currentCustomer") != null && session.getAttribute("curr
 
 if(session.getAttribute("currentCustomer") != null && session.getAttribute("currentCustomer") != "null" && switchvar.equals("deletearticle")){
     Article article = new Article();
-    Integer id = 0;
+    id = 0;
     try{    id        = Integer.parseInt(request.getParameter("id"));  } catch (Exception e) { error = "kein int"; }
     article.LoadArticleById(id);
     error = article.DeleteArticle(id);
 }
-
-Database database = new Database();
-Integer id = 0;
-Integer i = 0;
 
 List customer_ids = database.GetCustomerIds();
 List<Customer> allCustomers = new ArrayList<Customer>();
@@ -161,13 +179,13 @@ for(i=0;i<article_ids.size();i++){
                         </div>
                     </div>
                     <div class="space"></div>
-                    
+                    <a href="admin.jsp?switch=reset" class="buttonlink">Reset Database Tables</a>
+                    <div class="space"></div>
                     <div class="fullwidth db_output">
                         <strong>User</strong><br /><br />
                         <table>
                             <tr>
                                 <th>ID</th>
-                                <th>password</th>
                                 <th>firstname</th>
                                 <th>lastname</th>
                                 <th>country</th>
@@ -182,7 +200,6 @@ for(i=0;i<article_ids.size();i++){
                                 customer = allCustomers.get(i);
                             %>
                                 <tr>
-                                    <td><%= customer.GetId() %></td>
                                     <td><%= customer.GetId() %></td>
                                     <td><%= customer.GetFirstName() %></td>
                                     <td><%= customer.GetLastName() %></td>

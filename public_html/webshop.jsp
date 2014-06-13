@@ -112,7 +112,8 @@ for(i=0;i<article_ids.size();i++){
         </div> <!-- Content-Wrapper -->
         <div id="foot-wrapper">
             <div id="foot">
-                <a href="admin.jsp">Admin</a>
+                <span>Alle Produkte auf dieser Website sind Frei erfunden und dienen nur der Demonstration!</span>
+                <% if(currentCustomer.GetEmail() != ""){ %><a href="admin.jsp" style="margin-left: 100px;">Admin</a><% } %>
             </div>
         </div> <!-- Foot-Wrapper -->
     </body>
