@@ -47,6 +47,22 @@ if(switchvar.equals("article")){
     }
 }
 
+if(session.getAttribute("currentCustomer") != null && session.getAttribute("currentCustomer") != "null" && switchvar.equals("deletecustomer")){
+    Customer customer = new Customer();
+    Integer id = 0;
+    try{    id        = Integer.parseInt(request.getParameter("id"));  } catch (Exception e) { error = "kein int"; }
+    customer.LoadCustomerById(id);
+    error = customer.DeleteCustomer(id);
+}
+
+if(session.getAttribute("currentCustomer") != null && session.getAttribute("currentCustomer") != "null" && switchvar.equals("deletearticle")){
+    Article article = new Article();
+    Integer id = 0;
+    try{    id        = Integer.parseInt(request.getParameter("id"));  } catch (Exception e) { error = "kein int"; }
+    article.LoadArticleById(id);
+    error = article.DeleteArticle(id);
+}
+
 Database database = new Database();
 Integer id = 0;
 Integer i = 0;
@@ -145,8 +161,9 @@ for(i=0;i<article_ids.size();i++){
                         </div>
                     </div>
                     <div class="space"></div>
-                    <p>User</p>
+                    
                     <div class="fullwidth db_output">
+                        <strong>User</strong><br /><br />
                         <table>
                             <tr>
                                 <th>ID</th>
@@ -158,8 +175,9 @@ for(i=0;i<article_ids.size();i++){
                                 <th>zipcode</th>
                                 <th>address</th>
                                 <th>email</th>
+                                <th>löschen</th>
                             </tr>
-                            <%for(i=0;i<allCustomers.size();i++){ 
+                            <% for(i=0;i<allCustomers.size();i++){ 
                                 Customer customer = new Customer();
                                 customer = allCustomers.get(i);
                             %>
@@ -173,15 +191,17 @@ for(i=0;i<article_ids.size();i++){
                                     <td><%= customer.GetZipcode() %></td>
                                     <td><%= customer.GetAddress() %></td>
                                     <td><%= customer.GetEmail() %></td>
+                                    <td><a href="admin.jsp?switch=deletecustomer&id=<%= customer.GetId() %>">X</a></td>
                                 </tr>
                             <% } %>
                         </table>
                     </div>
-                    <p>Artikel</p>
+                    
                     <div class="fullwidth db_output">
+                        <strong>Artikel</strong><br /><br />
                         <table>
-                            <tr><th>ID</th><th>article_name</th><th>stock</th><th>price</th><th>description</th><th>picture</th></tr>
-                            <%for(i=0;i<allArticles.size();i++){ 
+                            <tr><th>ID</th><th>article_name</th><th>stock</th><th>price</th><th>description</th><th>picture</th><th>löschen</th></tr>
+                            <% for(i=0;i<allArticles.size();i++){ 
                                 Article article = new Article();
                                 article = (Article) allArticles.get(i);
                             %>
@@ -192,6 +212,7 @@ for(i=0;i<article_ids.size();i++){
                                     <td><%= article.GetPrice() %></td>
                                     <td><%= article.GetDescription() %></td>
                                     <td><%= article.GetPicture() %></td>
+                                    <td><a href="admin.jsp?switch=deletearticle&id=<%= article.GetId() %>">X</a></td>
                                 </tr>
                             <% } %>
                         </table>

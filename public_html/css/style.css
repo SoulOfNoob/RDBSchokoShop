@@ -34,8 +34,8 @@ body{
 
 }
 
-td{
-	padding-right: 10px;
+#content table{
+	width: 100%;
 }
 
 #Start {
@@ -280,6 +280,22 @@ td{
         width: 100%;
 	}
 
+	#content .article{
+        text-align: center;
+        padding: 10px 10px;
+        background-color: rgba(0, 0, 0, 0.4);
+        color: #ffffff;
+        width: 23%;
+        float: left;
+        margin: 1%;
+	}
+		#content .article table{
+			width: 100%
+		}
+		#content .article img{
+			max-height: 140px;
+			max-width: 160px;
+		}
 	.space{
 		height: 20px;
 		width: 100%;

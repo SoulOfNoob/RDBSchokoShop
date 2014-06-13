@@ -9,16 +9,27 @@ Customer currentCustomer = new Customer();
 if(request.getParameter("email") != null && request.getParameter("password") != null){
     email       = request.getParameter("email");
     password    = request.getParameter("password");
-
     error       = currentCustomer.LoadCustomer(email, password);
-
     session.setAttribute("currentCustomer", currentCustomer);
 
 }else if(session.getAttribute("currentCustomer") != null && session.getAttribute("currentCustomer") != "null"){
-
     currentCustomer = (Customer) session.getAttribute("currentCustomer");
-    
 }
+
+
+Database database = new Database();
+Integer id = 0;
+Integer i = 0;
+
+List article_ids = database.GetArticleIds();
+List<Article> allArticles = new ArrayList<Article>();
+for(i=0;i<article_ids.size();i++){
+    Article article = new Article();
+    id = (Integer) article_ids.get(i);
+    article.LoadArticleById(id);
+    allArticles.add(article);
+}
+
 %>
 
 <!DOCTYPE html>
@@ -67,7 +78,33 @@ if(request.getParameter("email") != null && request.getParameter("password") != 
             <div id="content">
                 <% if(error != ""){ %><div id="error"><%= error %></div><% } %>
                 <% if(currentCustomer.GetEmail() != ""){ %>
-                    <p>Logged in!</p>
+                    <form action="cart.jsp" method="POST">
+                        <p><input type="submit" value="Artikel in den Warenkorb Legen"></p>
+                        <div class="space"></div>
+                        <div class="clearfix">
+                        <% int row = 0; 
+                        for(i=0;i<allArticles.size();i++){ 
+                            row++;
+                            Article article = new Article();
+                            article = (Article) allArticles.get(i);
+                        %>
+                            <div class="article">
+                                <table>
+                                    <tr><td><%= article.GetArticleName() %></td></tr>
+                                    <tr><td><img src="pictures/<%= article.GetPicture() %>" alt="Bild zu <%= article.GetArticleName() %>" /></td></tr>
+                                    <tr><td><%= article.GetDescription() %></td></tr>
+                                    <tr><td><%= article.GetPrice() %></td></tr>
+                                    <tr><td><input type="text" value="0" size="4" name="feld<%= article.GetId() %>"></td></tr>
+                                </table>
+                            </div>
+                            <% if(row == 4){ %>
+                                </div><div class="clearfix">
+                                <% row = 0; %>
+                            <% } %>
+                        <% } %>
+                        </div>
+                        <div class="space"></div>
+                    </form>
                 <% }else{ %>
                     <p>Not logged in!</p>
                 <% } %>

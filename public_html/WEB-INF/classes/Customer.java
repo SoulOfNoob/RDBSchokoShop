@@ -28,7 +28,7 @@ public class Customer{
 
   public String CreateCustomer(String firstName, String lastName, String password, String country, String city, Integer zipcode, String address, String email){ 
       String message;
-      message = "<strong>Customer erfolgreich erstellt</strong>";
+      message = "<strong>Customer "+firstName+" "+lastName+" erfolgreich erstellt</strong>";
       try{
         Class.forName("org.gjt.mm.mysql.Driver");  //Da sind die Treiber
       } catch (ClassNotFoundException e) {
@@ -67,7 +67,7 @@ public class Customer{
   public String LoadCustomer(String email, String password){
 
     String message;
-    message = "<strong>Customer erfolgreich geladen</strong>";
+    message = "<strong>Erfolgreich eingeloggt</strong>";
     try{
       Class.forName("org.gjt.mm.mysql.Driver");  //Da sind die Treiber
     } catch (ClassNotFoundException e) {
@@ -79,8 +79,6 @@ public class Customer{
 
       ResultSet result = st.executeQuery("Select * From `Customers` Where `email` like '"+email+"' AND `password` like '"+password+"'");
       result.next();
-
-      message = message + "<strong>Result: " + result + "</strong>";
 
       this.id          = result.getInt(1);
       this.firstName   = result.getString("firstname");
@@ -95,7 +93,11 @@ public class Customer{
       st.close();
       con.close();
     } catch (Exception e) {
-      message = "<strong>MySQL Exception: " + e.getMessage() + "</strong>";
+      if(e.getMessage().equals("Illegal operation on empty result set.")){
+        message = "<strong>Login Fehlerhaft</strong>";
+      }else{
+        message = "<strong>MySQL Exception: " + e.getMessage() + "</strong>";
+      }
     }
     return message;
   }
@@ -132,6 +134,28 @@ public class Customer{
     } catch (Exception e) {
       message = "<strong>MySQL Exception: " + e.getMessage() + "</strong>";
     }
+    return message;
+  }
+
+  public String DeleteCustomer(Integer id){ 
+      String message;
+      message = "<strong>Customer erfolgreich geloescht</strong>";
+      try{
+        Class.forName("org.gjt.mm.mysql.Driver");  //Da sind die Treiber
+      } catch (ClassNotFoundException e) {
+        message = "<strong>DB-Treiber nicht da!</strong>";
+      }
+      try{
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dx45", "dx45", "Ch4H");
+        Statement st = con.createStatement();  //(Noch) leerer SQL-Befehl
+
+        st.executeUpdate("DELETE FROM `Customers` WHERE `ID` = '"+id+"';");
+     
+        st.close();
+        con.close();
+      } catch (Exception e) {
+        message = "<strong>MySQL Exception: " + e.getMessage() + "</strong>";
+      }
     return message;
   }
   //getter Methoden

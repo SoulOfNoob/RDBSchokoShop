@@ -51,9 +51,17 @@
 			</td>
 
 			<td width="50%">
-				schoko.CreateArticle('Schokolade',50,5.99,'Leckere Schokolade aus natuerlichem Anbau','Pfad'): 
+				schoko.CreateArticle("Schokolade",50,5.99,"Leckere Schokolade aus natuerlichem Anbau","Pfad"): 
 				<% Article schoko = new Article(); %>
-				<%= schoko.CreateArticle("Schokolade", 50, 5.99, "Leckere Schokolade aus natuerlichem Anbau", "BildPfad") %>
+				<%= schoko.CreateArticle("Schokolade", 50, 5.99, "Leckere Schokolade aus natuerlichem Anbau", "schoko.jpg") %>
+				<% Article schoko2 = new Article(); %>
+				<%= schoko2.CreateArticle("Weisse Schokolade", 500, 2.99, "Ganz normale Weisse Schokolade", "w_schoko.jpg") %>
+				<% Article schoko3 = new Article(); %>
+				<%= schoko3.CreateArticle("Nougat Schokolade", 50, 8.99, "Mit Nuessen verfeinertes Nougat", "nougat.jpg") %>
+				<% Article schoko4 = new Article(); %>
+				<%= schoko4.CreateArticle("Zartbitter Schokolade", 900, 14.99, "Leckere Zartbitterschokolade mit 80% Kakao", "zb_schoko.jpg") %>
+				<% Article schoko5 = new Article(); %>
+				<%= schoko5.CreateArticle("Kokos Schokolade", 20, 30.45, "Eine Riesige Tafel Vollmilchschokolade mit Kokosraspeln", "kokos.jpg") %>
 				
 				<table border="0">
 					<tr><td>ID: </td><td><%= schoko.GetId() %></td></tr>
@@ -67,16 +75,16 @@
 				<br />
 				
 				schoko2.LoadArticle("Schokolade"): 
-				<% Article schoko2 = new Article(); %>
-				<%= schoko2.LoadArticle("Schokolade") %>
+				<% Article schoko1 = new Article(); %>
+				<%= schoko1.LoadArticle("Schokolade") %>
 				
 				<table border="0">
-					<tr><td>ID: </td><td><%= schoko2.GetId() %></td></tr>
-					<tr><td>Artikel Name: </td><td><%= schoko2.GetArticleName() %></td></tr>
-					<tr><td>Vorrat: </td><td><%= schoko2.GetStock() %></td></tr>
-					<tr><td>Preis: </td><td><%= schoko2.GetPrice() %></td></tr>
-					<tr><td>Beschreibung: </td><td><%= schoko2.GetDescription() %></td></tr>
-					<tr><td>Bild</td><td><%= schoko2.GetPicture() %></td></tr>
+					<tr><td>ID: </td><td><%= schoko1.GetId() %></td></tr>
+					<tr><td>Artikel Name: </td><td><%= schoko1.GetArticleName() %></td></tr>
+					<tr><td>Vorrat: </td><td><%= schoko1.GetStock() %></td></tr>
+					<tr><td>Preis: </td><td><%= schoko1.GetPrice() %></td></tr>
+					<tr><td>Beschreibung: </td><td><%= schoko1.GetDescription() %></td></tr>
+					<tr><td>Bild</td><td><%= schoko1.GetPicture() %></td></tr>
 				</table>
 			</td>
 			<tr><td colspan="2" style="text-align: center;"><a href="http://praxi.mt.haw-hamburg.de/~dx45"> Zur&uuml;ck zu praxi</a></td></tr>

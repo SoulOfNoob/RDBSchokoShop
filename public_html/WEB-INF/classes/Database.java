@@ -23,7 +23,7 @@ public class Database{
 
   public String ExecuteQuery(String query){
     
-    message = "<strong>Customer erfolgreich erstellt</strong>";
+    message = "<strong>Query erfolgreich ausgefuehrt</strong>";
     try{
       Class.forName("org.gjt.mm.mysql.Driver");  //Da sind die Treiber
     } catch (ClassNotFoundException e) {
@@ -46,7 +46,7 @@ public class Database{
 
   public ResultSet GetResults(String query){
     
-    message = "<strong>Customer erfolgreich erstellt</strong>";
+    message = "<strong>Request erfolgreich ausgefuehrt</strong>";
     try{
       Class.forName("org.gjt.mm.mysql.Driver");  //Da sind die Treiber
     } catch (ClassNotFoundException e) {
@@ -182,22 +182,13 @@ public class Database{
           "`date` timestamp DEFAULT CURRENT_TIMESTAMP,"+
           "`status` int(1),"+
           "`price` double,"+
+          "`articles` text,"+
           "PRIMARY KEY (`ID`),"+
           "constraint foreign key(customer_ID) references Customers(ID) on update restrict"+
         ") ENGINE=InnoDB;"
        );
        //st.executeUpdate("INSERT INTO `Bills` (customer_ID,status,price) VALUES (1,1,17.97);");
 
-       st.executeUpdate(
-        "CREATE TABLE `Orders` ("+
-          "`bill_ID` int(5),"+
-          "`article_ID` int(5),"+
-          "`amount` int(11),"+
-          "constraint foreign key(bill_ID) references Customers(ID) on update restrict,"+
-          "constraint foreign key(article_ID) references Articles(ID) on update restrict"+
-        ") ENGINE=InnoDB;"
-       );
-       //st.executeUpdate("INSERT INTO `Orders` (bill_ID,article_ID,amount) VALUES (1,1,3);");
        st.close();
        con.close();
    } catch (Exception e) {

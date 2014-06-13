@@ -22,7 +22,7 @@ public class Article{
 
   public String CreateArticle(String articleName, Integer stock, Double price, String description, String picture){ 
     String message;
-    message = "<strong>Artikel erfolgreich erstellt</strong>";
+    message = "<strong>Artikel "+articleName+" erfolgreich erstellt</strong>";
     try{
       Class.forName("org.gjt.mm.mysql.Driver");  //Da sind die Treiber
     } catch (ClassNotFoundException e) {
@@ -104,6 +104,28 @@ public class Article{
       this.description  = result.getString("description");
       this.picture      = result.getString("picture");
 
+      st.close();
+      con.close();
+    } catch (Exception e) {
+      message = "<strong>MySQL Exception: " + e.getMessage() + "</strong>";
+    }
+    return message;
+  }
+
+  public String DeleteArticle(Integer id){ 
+    String message;
+    message = "<strong>Artikel erfolgreich geloescht</strong>";
+    try{
+      Class.forName("org.gjt.mm.mysql.Driver");  //Da sind die Treiber
+    } catch (ClassNotFoundException e) {
+      message = "<strong>DB-Treiber nicht da!</strong>";
+    }
+    try{
+      Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dx45", "dx45", "Ch4H");
+      Statement st = con.createStatement();  //(Noch) leerer SQL-Befehl
+
+      st.executeUpdate("DELETE FROM `Articles` WHERE `ID` = '"+id+"';");
+   
       st.close();
       con.close();
     } catch (Exception e) {
